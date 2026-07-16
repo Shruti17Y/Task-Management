@@ -1,6 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const connectDB = require('./config/db');
+
+// Connect to Database
+if (process.env.NODE_ENV !== 'test') {
+  connectDB();
+}
 
 const app = express();
 
@@ -17,11 +23,14 @@ app.get('/api', (req, res) => {
   res.json({ message: 'Task Management API is running' });
 });
 
+const mongoose = require('mongoose');
+
 app.get('/api/health', (req, res) => {
+  const dbStatus = mongoose.connection.readyState === 1 ? 'Connected (MongoDB)' : 'Disconnected';
   res.json({
     status: 'UP',
     message: 'Backend API is connected and running',
-    database: 'Ignored (In-Memory)',
+    database: dbStatus,
     timestamp: new Date(),
   });
 });
