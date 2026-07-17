@@ -103,6 +103,10 @@ const styles = {
     width: 'auto',
     padding: '10px 20px',
     whiteSpace: 'nowrap',
+    background: 'linear-gradient(135deg, #ffa05e 0%, #ff791a 100%)',
+    color: '#ffffff',
+    border: 'none',
+    boxShadow: '0 4px 12px rgba(255, 121, 26, 0.25)',
   }
 };
 

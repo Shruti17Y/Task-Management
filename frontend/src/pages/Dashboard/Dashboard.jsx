@@ -118,7 +118,7 @@ export const Dashboard = () => {
     } else {
       result = await updateTask(editingTaskId, formData);
     }
-    
+
     setSubmitting(false);
     if (result.success) {
       setView('list');
@@ -175,51 +175,76 @@ export const Dashboard = () => {
         onCheckConnectivity={checkConnectivity}
       />
 
-      {view === 'list' ? (
-        <>
-          <StatsCards
-            totalTasks={stats.totalTasks}
-            pendingTasks={stats.pendingTasks}
-            completedTasks={stats.completedTasks}
-          />
+      <StatsCards
+        totalTasks={stats.totalTasks}
+        pendingTasks={stats.pendingTasks}
+        completedTasks={stats.completedTasks}
+      />
 
-          <FilterBar
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            statusFilter={statusFilter}
-            setStatusFilter={setStatusFilter}
-            priorityFilter={priorityFilter}
-            setPriorityFilter={setPriorityFilter}
-            sortBy={sortBy}
-            setSortBy={setSortBy}
-            onAddTask={openCreateForm}
-          />
+      <FilterBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        statusFilter={statusFilter}
+        setStatusFilter={setStatusFilter}
+        priorityFilter={priorityFilter}
+        setPriorityFilter={setPriorityFilter}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        onAddTask={openCreateForm}
+      />
 
-          <TaskList
-            tasks={sortedTasksList}
-            loadingTasks={loadingTasks}
-            taskError={taskError}
-            loadTasks={loadTasks}
-            onToggleComplete={handleToggleComplete}
-            onEdit={openEditForm}
-            onDelete={handleDeleteTask}
-            hasTotalTasks={tasks.length > 0}
-            currentPage={currentPage}
-            onPageChange={setCurrentPage}
-          />
-        </>
-      ) : (
-        <TaskForm
-          view={view}
-          formData={formData}
-          onChange={handleInputChange}
-          onSubmit={handleFormSubmit}
-          onCancel={() => setView('list')}
-          submitting={submitting}
-        />
+      <TaskList
+        tasks={sortedTasksList}
+        loadingTasks={loadingTasks}
+        taskError={taskError}
+        loadTasks={loadTasks}
+        onToggleComplete={handleToggleComplete}
+        onEdit={openEditForm}
+        onDelete={handleDeleteTask}
+        hasTotalTasks={tasks.length > 0}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      />
+
+      {(view === 'create' || view === 'edit') && (
+        <div style={styles.modalOverlay}>
+          <div style={styles.modalContent}>
+            <TaskForm
+              view={view}
+              formData={formData}
+              onChange={handleInputChange}
+              onSubmit={handleFormSubmit}
+              onCancel={() => setView('list')}
+              submitting={submitting}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
+};
+
+const styles = {
+  modalOverlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh',
+    background: 'rgba(11, 15, 25, 0.5)',
+    backdropFilter: 'blur(8px)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 9999,
+    boxSizing: 'border-box',
+    padding: '20px',
+  },
+  modalContent: {
+    width: '100%',
+    maxWidth: '500px',
+    animation: 'modalSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+  }
 };
 
 export default Dashboard;

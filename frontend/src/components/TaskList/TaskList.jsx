@@ -55,7 +55,7 @@ export const TaskList = ({
 
   return (
     <>
-      <div style={styles.taskListContainer}>
+      <div className="task-list-grid">
         {paginatedTasks.map((task) => (
           <TaskCard
             key={task._id}
@@ -77,11 +77,6 @@ export const TaskList = ({
 };
 
 const styles = {
-  taskListContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '16px',
-  },
   taskListError: {
     display: 'flex',
     justifyContent: 'space-between',

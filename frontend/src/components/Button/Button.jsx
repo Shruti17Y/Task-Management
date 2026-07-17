@@ -4,7 +4,7 @@ export const Button = ({
   children,
   onClick,
   type = 'button',
-  variant = 'primary', // 'primary' | 'secondary' | 'danger'
+  variant = 'secondary', // 'primary' | 'secondary' | 'danger'
   disabled = false,
   className = '',
   style = {},

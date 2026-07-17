@@ -5,7 +5,8 @@
   --card-bg: #ffffff;
   --border: #e5e7eb;
   --code-bg: #f3f4f6;
-  --accent: #4f46e5; /* Indigo */
+  --accent: #4f46e5;
+  /* Indigo */
   --accent-hover: #4338ca;
   --accent-bg: #eff6ff;
   --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
@@ -44,7 +45,12 @@ body {
   box-sizing: border-box;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--heading);
   font-weight: 600;
   color: var(--text-h);
@@ -58,4 +64,15 @@ code {
   background: var(--code-bg);
   border-radius: 6px;
   color: var(--text-h);
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

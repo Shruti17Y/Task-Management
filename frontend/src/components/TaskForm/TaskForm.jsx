@@ -1,8 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from '../Card/Card';
 import Input from '../Input/Input';
 import Select from '../Select/Select';
-import Button from '../Button/Button';
+
+const CloseIconBtn = ({ onClick }) => {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        ...styles.closeBtn,
+        ...(hovered ? styles.closeBtnHover : {})
+      }}
+      title="Close"
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+  );
+};
+
+const FormActionBtn = ({ type, onClick, disabled, isSubmit, children }) => {
+  const [hovered, setHovered] = useState(false);
+  const [active, setActive] = useState(false);
+
+  const btnStyle = isSubmit ? styles.submitBtn : styles.cancelBtn;
+  const hoverStyle = isSubmit ? styles.submitBtnHover : styles.cancelBtnHover;
+
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => {
+        setHovered(false);
+        setActive(false);
+      }}
+      onMouseDown={() => setActive(true)}
+      onMouseUp={() => setActive(false)}
+      style={{
+        ...btnStyle,
+        ...(hovered ? hoverStyle : {}),
+        ...(active ? styles.btnActive : {}),
+        ...(disabled ? { opacity: 0.6, cursor: 'not-allowed' } : {})
+      }}
+    >
+      {children}
+    </button>
+  );
+};
 
 export const TaskForm = ({
   view,
@@ -15,14 +66,17 @@ export const TaskForm = ({
   return (
     <div style={styles.taskFormWrapper}>
       <Card className="auth-card" style={styles.taskFormCard}>
-        <h2>{view === 'create' ? 'Create Task' : 'Edit Task'}</h2>
-        <p className="auth-subtitle">Fill in the fields to save your task details.</p>
-        
+        <div style={styles.cardHeader}>
+          <h2>{view === 'create' ? 'Create Task' : 'Edit Task'}</h2>
+          <CloseIconBtn onClick={onCancel} />
+        </div>
+        <p className="auth-subtitle" style={styles.subtitle}>Fill in the fields to save your task details.</p>
+
         <form onSubmit={onSubmit}>
           <div className="form-group">
             <label className="form-label">Task Title <span style={{ color: '#ef4444' }}>*</span></label>
-            <Input 
-              type="text" 
+            <Input
+              type="text"
               name="title"
               required
               placeholder="E.g., Complete project report"
@@ -33,7 +87,7 @@ export const TaskForm = ({
 
           <div className="form-group">
             <label className="form-label">Description</label>
-            <textarea 
+            <textarea
               name="description"
               placeholder="Enter details about this task..."
               value={formData.description}
@@ -47,7 +101,7 @@ export const TaskForm = ({
           <div style={styles.formGridRow}>
             <div className="form-group" style={styles.formGridCol}>
               <label className="form-label">Priority</label>
-              <Select 
+              <Select
                 name="priority"
                 value={formData.priority}
                 onChange={onChange}
@@ -60,10 +114,10 @@ export const TaskForm = ({
                 ]}
               />
             </div>
-            
+
             <div className="form-group" style={styles.formGridCol}>
               <label className="form-label">Status</label>
-              <Select 
+              <Select
                 name="status"
                 value={formData.status}
                 onChange={onChange}
@@ -80,8 +134,8 @@ export const TaskForm = ({
 
           <div className="form-group">
             <label className="form-label">Due Date</label>
-            <Input 
-              type="date" 
+            <Input
+              type="date"
               name="dueDate"
               value={formData.dueDate}
               onChange={onChange}
@@ -89,22 +143,19 @@ export const TaskForm = ({
           </div>
 
           <div style={styles.formActionsRow}>
-            <Button 
-              type="button" 
-              variant="secondary" 
+            <FormActionBtn
+              type="button"
               onClick={onCancel}
-              style={styles.formActionBtnFull}
             >
               Cancel
-            </Button>
-            <Button 
-              type="submit" 
-              variant="primary" 
+            </FormActionBtn>
+            <FormActionBtn
+              type="submit"
               disabled={submitting}
-              style={styles.formActionBtnFull}
+              isSubmit
             >
-              {submitting ? 'Saving...' : 'Save Task'}
-            </Button>
+              {submitting ? 'Saving...' : 'Add Task'}
+            </FormActionBtn>
           </div>
         </form>
       </Card>
@@ -116,12 +167,42 @@ const styles = {
   taskFormWrapper: {
     display: 'flex',
     justifyContent: 'center',
-    padding: '20px 0',
+    padding: '0',
+    width: '100%',
   },
   taskFormCard: {
     maxWidth: '500px',
     width: '100%',
     margin: 0,
+    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.4)',
+    border: '1px solid var(--border)',
+    background: 'var(--card-bg)',
+    position: 'relative',
+  },
+  cardHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '4px',
+  },
+  closeBtn: {
+    background: 'transparent',
+    border: 'none',
+    color: 'var(--text)',
+    cursor: 'pointer',
+    padding: '6px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '50%',
+    transition: 'all 0.2s ease',
+  },
+  closeBtnHover: {
+    background: 'rgba(255, 255, 255, 0.08)',
+    color: 'var(--text-h)',
+  },
+  subtitle: {
+    margin: '0 0 24px 0',
   },
   taskFormTextarea: {
     minHeight: '100px',
@@ -144,12 +225,45 @@ const styles = {
   },
   formActionsRow: {
     display: 'flex',
+    justifyContent: 'flex-end',
     gap: '12px',
     marginTop: '32px',
   },
-  formActionBtnFull: {
-    flex: 1,
-    padding: '12px',
+  cancelBtn: {
+    width: 'auto',
+    padding: '10px 24px',
+    background: 'rgba(255, 255, 255, 0.05)',
+    color: 'var(--text-h)',
+    border: '1px solid var(--border)',
+    borderRadius: '10px',
+    fontWeight: '600',
+    fontSize: '14px',
+    cursor: 'pointer',
+    transition: 'all 0.2s ease',
+  },
+  cancelBtnHover: {
+    background: 'rgba(255, 255, 255, 0.1)',
+  },
+  submitBtn: {
+    width: 'auto',
+    padding: '10px 24px',
+    background: 'linear-gradient(135deg, #ffa05e 0%, #ff791a 100%)',
+    color: '#ffffff',
+    border: 'none',
+    borderRadius: '10px',
+    fontWeight: '600',
+    fontSize: '14px',
+    cursor: 'pointer',
+    transition: 'all 0.2s ease',
+    boxShadow: '0 4px 14px rgba(255, 121, 26, 0.25)',
+  },
+  submitBtnHover: {
+    background: 'linear-gradient(135deg, #ffae75 0%, #ff8933 100%)',
+    boxShadow: '0 6px 20px rgba(255, 121, 26, 0.35)',
+    transform: 'translateY(-1px)',
+  },
+  btnActive: {
+    transform: 'scale(0.97)',
   }
 };
 
