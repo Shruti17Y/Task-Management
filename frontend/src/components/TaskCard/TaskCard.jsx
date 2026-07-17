@@ -9,6 +9,7 @@ export const TaskCard = ({ task, onToggleComplete, onEdit, onDelete }) => {
   const isCompleted = task.status === 'Completed';
   const priorityColor = getPriorityColor(task.priority);
   const formattedDate = formatDate(task.dueDate);
+  const formattedCreatedAt = formatDate(task.createdAt);
   const priorityBadgeStyle = getPriorityBadgeStyle(task.priority);
 
   const cardStyle = {
@@ -51,8 +52,13 @@ export const TaskCard = ({ task, onToggleComplete, onEdit, onDelete }) => {
       </div>
 
       <div style={styles.taskMetadataActions}>
-        <div style={styles.taskDueDate}>
-          {formattedDate && `Due: ${formattedDate}`}
+        <div style={styles.taskDates}>
+          {formattedCreatedAt && (
+            <div style={styles.taskDateText}>Created: {formattedCreatedAt}</div>
+          )}
+          {formattedDate && (
+            <div style={styles.taskDateText}>Due: {formattedDate}</div>
+          )}
         </div>
 
         <div style={styles.taskActions}>
@@ -141,7 +147,12 @@ const styles = {
     paddingTop: '12px',
     marginTop: '4px',
   },
-  taskDueDate: {
+  taskDates: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '2px',
+  },
+  taskDateText: {
     fontSize: '13px',
     color: 'var(--text)',
   },

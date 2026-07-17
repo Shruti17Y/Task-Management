@@ -4,6 +4,8 @@ import Loader from '../Loader/Loader';
 import EmptyState from '../EmptyState/EmptyState';
 import Button from '../Button/Button';
 
+import Pagination from '../Pagination/Pagination';
+
 export const TaskList = ({
   tasks = [],
   loadingTasks,
@@ -13,6 +15,8 @@ export const TaskList = ({
   onEdit,
   onDelete,
   hasTotalTasks = false,
+  currentPage = 1,
+  onPageChange,
 }) => {
   if (loadingTasks) {
     return <Loader text="Fetching tasks..." />;
@@ -42,18 +46,33 @@ export const TaskList = ({
     );
   }
 
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(tasks.length / itemsPerPage);
+
+  // Paginated slice
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedTasks = tasks.slice(startIndex, startIndex + itemsPerPage);
+
   return (
-    <div style={styles.taskListContainer}>
-      {tasks.map((task) => (
-        <TaskCard
-          key={task._id}
-          task={task}
-          onToggleComplete={onToggleComplete}
-          onEdit={onEdit}
-          onDelete={onDelete}
-        />
-      ))}
-    </div>
+    <>
+      <div style={styles.taskListContainer}>
+        {paginatedTasks.map((task) => (
+          <TaskCard
+            key={task._id}
+            task={task}
+            onToggleComplete={onToggleComplete}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        ))}
+      </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={onPageChange}
+      />
+    </>
   );
 };
 

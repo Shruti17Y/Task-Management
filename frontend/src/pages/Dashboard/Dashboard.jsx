@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
 import useTasks from '../../hooks/useTasks';
 import useConnectivity from '../../hooks/useConnectivity';
@@ -35,6 +35,12 @@ export const Dashboard = () => {
   const [statusFilter, setStatusFilter] = useState('All');
   const [priorityFilter, setPriorityFilter] = useState('All');
   const [sortBy, setSortBy] = useState('createdAt:desc');
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Reset to first page when search or filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, statusFilter, priorityFilter, sortBy]);
 
   // Navigation View State
   const [view, setView] = useState('list'); // 'list' | 'create' | 'edit'
@@ -198,6 +204,8 @@ export const Dashboard = () => {
             onEdit={openEditForm}
             onDelete={handleDeleteTask}
             hasTotalTasks={tasks.length > 0}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
           />
         </>
       ) : (
