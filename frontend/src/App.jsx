@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react';
 import Navbar from './components/Navbar';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/Dashboard/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import { AuthProvider, AuthContext } from './context/AuthContext';
+import { TaskProvider } from './context/TaskContext';
 import './App.css';
 
 function MainApp() {
@@ -40,7 +41,9 @@ function MainApp() {
 function App() {
   return (
     <AuthProvider>
-      <MainApp />
+      <TaskProvider>
+        <MainApp />
+      </TaskProvider>
     </AuthProvider>
   );
 }

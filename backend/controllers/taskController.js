@@ -53,9 +53,18 @@ exports.createTask = async (req, res, next) => {
   try {
     const { title, description, status, priority, dueDate } = req.body;
 
-    if (!title) {
+    if (!title || !title.trim()) {
       res.status(400);
       throw new Error('Please provide a task title');
+    }
+
+    if (dueDate) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (new Date(dueDate) < today) {
+        res.status(400);
+        throw new Error('Due date cannot be in the past');
+      }
     }
 
     const task = await Task.create({
@@ -77,6 +86,20 @@ exports.updateTask = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { title, description, status, priority, dueDate } = req.body;
+
+    if (title !== undefined && (!title || !title.trim())) {
+      res.status(400);
+      throw new Error('Please provide a task title');
+    }
+
+    if (dueDate) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (new Date(dueDate) < today) {
+        res.status(400);
+        throw new Error('Due date cannot be in the past');
+      }
+    }
 
     const task = await Task.findOne({ _id: id, user: req.user._id });
 

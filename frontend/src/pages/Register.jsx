@@ -18,8 +18,14 @@ const Register = ({ setView }) => {
       return;
     }
 
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters long');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long');
       return;
     }
 
@@ -46,7 +52,9 @@ const Register = ({ setView }) => {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label" htmlFor="name">Full Name</label>
+            <label className="form-label" htmlFor="name">
+              Full Name <span style={{ color: '#ef4444' }}>*</span>
+            </label>
             <input
               id="name"
               type="text"
@@ -60,7 +68,9 @@ const Register = ({ setView }) => {
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="email">Email Address</label>
+            <label className="form-label" htmlFor="email">
+              Email Address <span style={{ color: '#ef4444' }}>*</span>
+            </label>
             <input
               id="email"
               type="email"
@@ -74,12 +84,14 @@ const Register = ({ setView }) => {
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="password">Password</label>
+            <label className="form-label" htmlFor="password">
+              Password <span style={{ color: '#ef4444' }}>*</span>
+            </label>
             <input
               id="password"
               type="password"
               className="form-input"
-              placeholder="•••••••• (min 6 chars)"
+              placeholder="•••••••• (min 8 chars)"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={loading}

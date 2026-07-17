@@ -17,6 +17,12 @@ const Login = ({ setView }) => {
       return;
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
     setLoading(true);
     const result = await login(email, password);
     setLoading(false);
@@ -40,7 +46,9 @@ const Login = ({ setView }) => {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label" htmlFor="email">Email Address</label>
+            <label className="form-label" htmlFor="email">
+              Email Address <span style={{ color: '#ef4444' }}>*</span>
+            </label>
             <input
               id="email"
               type="email"
@@ -54,7 +62,9 @@ const Login = ({ setView }) => {
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="password">Password</label>
+            <label className="form-label" htmlFor="password">
+              Password <span style={{ color: '#ef4444' }}>*</span>
+            </label>
             <input
               id="password"
               type="password"

@@ -33,6 +33,17 @@ exports.register = async (req, res, next) => {
       throw new Error('Please provide name, email, and password');
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      res.status(400);
+      throw new Error('Please enter a valid email address');
+    }
+
+    if (password.length < 8) {
+      res.status(400);
+      throw new Error('Password must be at least 8 characters long');
+    }
+
     const userExists = await User.findOne({ email: email.toLowerCase() });
     if (userExists) {
       res.status(400);
