@@ -70,11 +70,11 @@ export const TaskCard = ({ task, onToggleComplete, onEdit, onDelete }) => {
             title={isCompleted ? 'Mark Pending' : 'Mark Completed'}
           >
             {isCompleted ? (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#111827" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             ) : (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#111827" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10" />
               </svg>
             )}
@@ -84,7 +84,7 @@ export const TaskCard = ({ task, onToggleComplete, onEdit, onDelete }) => {
             onClick={() => onEdit(task)}
             title="Edit Task"
           >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#111827" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
               <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z" />
             </svg>
@@ -94,7 +94,7 @@ export const TaskCard = ({ task, onToggleComplete, onEdit, onDelete }) => {
             onClick={() => onDelete(task._id)}
             title="Delete Task"
           >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#111827" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="3 6 5 6 21 6" />
               <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
             </svg>
@@ -176,7 +176,7 @@ const styles = {
   },
   priorityBadge: {
     background: 'rgba(0, 0, 0, 0.05)',
-    color: '#111827',
+    color: 'inherit',
     fontSize: '11px',
     fontWeight: '700',
     borderRadius: '8px',
@@ -196,17 +196,19 @@ const styles = {
     fontSize: '18px',
     fontWeight: '700',
     margin: 0,
-    color: '#111827',
+    color: 'inherit',
     lineHeight: '1.25',
     letterSpacing: '-0.3px',
   },
   taskTitleCompleted: {
     textDecoration: 'line-through',
-    color: 'rgba(17, 24, 39, 0.6)',
+    color: 'inherit',
+    opacity: 0.6,
   },
   taskDescription: {
     fontSize: '13px',
-    color: 'rgba(17, 24, 39, 0.8)',
+    color: 'inherit',
+    opacity: 0.85,
     margin: '4px 0 0',
     whiteSpace: 'pre-wrap',
     lineHeight: '1.4',
@@ -216,7 +218,7 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'flex-end',
     paddingTop: '12px',
-    borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+    borderTop: '1px solid var(--card-footer-border, rgba(0, 0, 0, 0.06))',
     marginTop: 'auto',
   },
   taskDates: {
@@ -226,17 +228,18 @@ const styles = {
   },
   dateRow: {
     fontSize: '11px',
-    color: 'rgba(17, 24, 39, 0.75)',
+    color: 'inherit',
+    opacity: 0.75,
     fontWeight: '500',
     whiteSpace: 'nowrap',
   },
   dateLabel: {
     fontWeight: '600',
-    color: '#111827',
+    color: 'inherit',
   },
   statusBadge: {
-    background: 'rgba(255, 255, 255, 0.65)',
-    color: '#111827',
+    background: 'var(--status-badge-bg, rgba(255, 255, 255, 0.65))',
+    color: 'inherit',
     fontSize: '11px',
     fontWeight: '600',
     borderRadius: '12px',
@@ -257,13 +260,14 @@ const styles = {
     width: '28px',
     height: '28px',
     borderRadius: '50%',
-    background: 'rgba(0, 0, 0, 0.05)',
+    background: 'var(--action-btn-bg, rgba(0, 0, 0, 0.05))',
+    color: 'inherit',
     border: 'none',
     cursor: 'pointer',
     transition: 'all 0.2s ease',
   },
   actionButtonHover: {
-    background: 'rgba(0, 0, 0, 0.12)',
+    background: 'var(--action-btn-hover-bg, rgba(0, 0, 0, 0.12))',
     transform: 'scale(1.08)',
   },
   actionButtonActive: {
@@ -273,14 +277,14 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     fontSize: '11px',
-    color: '#1f2937',
+    color: 'inherit',
+    opacity: 0.8,
     marginTop: '10px',
-    opacity: 0.85,
   },
   assigneeLabel: {
     fontWeight: '600',
     marginRight: '4px',
-    color: '#111827',
+    color: 'inherit',
   },
   assigneeName: {
     fontWeight: '600',

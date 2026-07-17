@@ -12,6 +12,16 @@ import './App.css';
 function MainApp() {
   const { user, loading } = useContext(AuthContext);
   const [view, setView] = useState('login'); // 'login' | 'register'
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+  React.useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
   if (loading) {
     return (
@@ -26,7 +36,7 @@ function MainApp() {
 
   return (
     <div className="App">
-      <Navbar setView={setView} currentView={view} />
+      <Navbar setView={setView} currentView={view} theme={theme} toggleTheme={toggleTheme} />
       <main>
         {user ? (
           <>

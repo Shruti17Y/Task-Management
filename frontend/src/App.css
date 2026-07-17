@@ -730,3 +730,29 @@ main {
   border-radius: 4px;
   font-weight: 600;
 }
+
+/* Theme Toggle Button Styling */
+.theme-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  outline: none;
+  margin-right: 4px;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--code-bg);
+  color: var(--text-h);
+  transform: rotate(15deg);
+}
+
+.theme-toggle-btn svg {
+  transition: transform 0.3s ease;
+}
