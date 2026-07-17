@@ -9,6 +9,7 @@ import TaskList from '../../components/TaskList/TaskList';
 import TaskForm from '../../components/TaskForm/TaskForm';
 import { filterTasks } from '../../utils/filterTasks';
 import { sortTasks } from '../../utils/sortTasks';
+import { fetchFromAPI } from '../../services/api';
 
 export const Dashboard = () => {
   const { user } = useAuth();
@@ -36,6 +37,27 @@ export const Dashboard = () => {
   const [priorityFilter, setPriorityFilter] = useState('All');
   const [sortBy, setSortBy] = useState('createdAt:desc');
   const [currentPage, setCurrentPage] = useState(1);
+  const [users, setUsers] = useState([]);
+
+  // Load tasks on mount
+  useEffect(() => {
+    loadTasks();
+  }, [loadTasks]);
+
+  // Fetch users if logged in as admin
+  useEffect(() => {
+    if (user && user.email === 'admin@example.com') {
+      const fetchUsers = async () => {
+        try {
+          const data = await fetchFromAPI('/auth/users');
+          setUsers(data || []);
+        } catch (e) {
+          console.error('Error fetching users:', e.message);
+        }
+      };
+      fetchUsers();
+    }
+  }, [user]);
 
   // Reset to first page when search or filters change
   useEffect(() => {
@@ -51,6 +73,7 @@ export const Dashboard = () => {
     status: 'Pending',
     priority: 'Medium',
     dueDate: '',
+    assignedUser: '',
   });
 
   // Form Submitting indicator
@@ -74,6 +97,7 @@ export const Dashboard = () => {
       status: 'Pending',
       priority: 'Medium',
       dueDate: '',
+      assignedUser: '',
     });
     setView('create');
   }, []);
@@ -87,6 +111,7 @@ export const Dashboard = () => {
       status: task.status || 'Pending',
       priority: task.priority || 'Medium',
       dueDate: task.dueDate ? new Date(task.dueDate).toISOString().substr(0, 10) : '',
+      assignedUser: task.user ? (task.user._id || task.user) : '',
     });
     setView('edit');
   }, []);
@@ -216,6 +241,8 @@ export const Dashboard = () => {
               onSubmit={handleFormSubmit}
               onCancel={() => setView('list')}
               submitting={submitting}
+              users={users}
+              isAdmin={user && user.email === 'admin@example.com'}
             />
           </div>
         </div>

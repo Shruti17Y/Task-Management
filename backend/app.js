@@ -38,6 +38,7 @@ app.get('/api/health', (req, res) => {
 // Mount Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/tasks', require('./routes/taskRoutes'));
+app.use('/api/notifications', require('./routes/notificationRoutes'));
 
 // Error handling middleware
 const { errorHandler } = require('./middleware/errorMiddleware');

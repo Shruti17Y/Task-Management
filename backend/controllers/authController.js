@@ -109,3 +109,16 @@ exports.login = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getUsers = async (req, res, next) => {
+  try {
+    if (req.user.email !== 'admin@example.com') {
+      res.status(403);
+      throw new Error('Not authorized as admin');
+    }
+    const users = await User.find({}).select('name email');
+    res.status(200).json(users);
+  } catch (error) {
+    next(error);
+  }
+};

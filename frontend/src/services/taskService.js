@@ -13,6 +13,7 @@ export const taskService = {
       status: formData.status,
       priority: formData.priority,
       dueDate: formData.dueDate ? new Date(formData.dueDate) : undefined,
+      assignedUser: formData.assignedUser || undefined,
     };
     return fetchFromAPI('/tasks', {
       method: 'POST',
@@ -27,6 +28,7 @@ export const taskService = {
       status: formData.status,
       priority: formData.priority,
       dueDate: formData.dueDate ? new Date(formData.dueDate) : null,
+      assignedUser: formData.assignedUser || undefined,
     };
     return fetchFromAPI(`/tasks/${taskId}`, {
       method: 'PUT',

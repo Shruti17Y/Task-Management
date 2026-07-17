@@ -113,6 +113,16 @@ export const TaskCard = ({ task, onToggleComplete, onEdit, onDelete }) => {
             {task.description}
           </p>
         )}
+
+        {task.user && typeof task.user === 'object' && task.user.name && (
+          <div style={styles.assigneeContainer}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ marginRight: '4px' }}>
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <span style={styles.assigneeLabel}>User:</span> <strong style={styles.assigneeName}>{task.user.name}</strong>
+          </div>
+        )}
       </div>
 
       {/* Footer Details (Dates on Left, Status Badge on Right) */}
@@ -258,6 +268,22 @@ const styles = {
   },
   actionButtonActive: {
     transform: 'scale(0.95)',
+  },
+  assigneeContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: '11px',
+    color: '#1f2937',
+    marginTop: '10px',
+    opacity: 0.85,
+  },
+  assigneeLabel: {
+    fontWeight: '600',
+    marginRight: '4px',
+    color: '#111827',
+  },
+  assigneeName: {
+    fontWeight: '600',
   },
 };
 

@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { TaskProvider } from './context/TaskContext';
+import { NotificationProvider } from './context/NotificationContext';
+import NotificationSidebar from './components/NotificationSidebar/NotificationSidebar';
 import './App.css';
 
 function MainApp() {
@@ -27,7 +29,10 @@ function MainApp() {
       <Navbar setView={setView} currentView={view} />
       <main>
         {user ? (
-          <Dashboard />
+          <>
+            <Dashboard />
+            <NotificationSidebar />
+          </>
         ) : view === 'login' ? (
           <Login setView={setView} />
         ) : (
@@ -42,7 +47,9 @@ function App() {
   return (
     <AuthProvider>
       <TaskProvider>
-        <MainApp />
+        <NotificationProvider>
+          <MainApp />
+        </NotificationProvider>
       </TaskProvider>
     </AuthProvider>
   );

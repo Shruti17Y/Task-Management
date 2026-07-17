@@ -62,6 +62,8 @@ export const TaskForm = ({
   onSubmit,
   onCancel,
   submitting,
+  users = [],
+  isAdmin = false,
 }) => {
   return (
     <div style={styles.taskFormWrapper}>
@@ -131,6 +133,23 @@ export const TaskForm = ({
               />
             </div>
           </div>
+
+          {isAdmin && users.length > 0 && (
+            <div className="form-group">
+              <label className="form-label">Assign To User</label>
+              <Select
+                name="assignedUser"
+                value={formData.assignedUser}
+                onChange={onChange}
+                className="form-input"
+                style={styles.formSelectFull}
+                options={[
+                  { value: '', label: 'Select assignee user...' },
+                  ...users.map(u => ({ value: u._id, label: `${u.name} (${u.email})` }))
+                ]}
+              />
+            </div>
+          )}
 
           <div className="form-group">
             <label className="form-label">Due Date</label>
