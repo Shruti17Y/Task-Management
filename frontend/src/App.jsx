@@ -6,6 +6,7 @@ import Register from './pages/Register';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { TaskProvider } from './context/TaskContext';
 import { NotificationProvider } from './context/NotificationContext';
+import { ToastProvider } from './context/ToastContext';
 import NotificationSidebar from './components/NotificationSidebar/NotificationSidebar';
 import './App.css';
 
@@ -56,11 +57,13 @@ function MainApp() {
 function App() {
   return (
     <AuthProvider>
-      <TaskProvider>
-        <NotificationProvider>
-          <MainApp />
-        </NotificationProvider>
-      </TaskProvider>
+      <ToastProvider>
+        <TaskProvider>
+          <NotificationProvider>
+            <MainApp />
+          </NotificationProvider>
+        </TaskProvider>
+      </ToastProvider>
     </AuthProvider>
   );
 }

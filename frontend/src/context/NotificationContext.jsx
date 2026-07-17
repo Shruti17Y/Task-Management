@@ -2,12 +2,14 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import { AuthContext } from './AuthContext';
 import { TaskContext } from './TaskContext';
 import { fetchFromAPI } from '../services/api';
+import { useToast } from './ToastContext';
 
 export const NotificationContext = createContext(null);
 
 export const NotificationProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
   const taskContext = useContext(TaskContext); // Optional, so we don't crash if TaskProvider isn't parent
+  const { showToast } = useToast();
   const [notifications, setNotifications] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [loadingNotifications, setLoadingNotifications] = useState(false);
@@ -86,6 +88,17 @@ export const NotificationProvider = ({ children }) => {
           if (prev.some(n => n._id === newNotification._id)) return prev;
           return [newNotification, ...prev];
         });
+
+        // Show a beautiful toast
+        let toastMsg = 'New task update received';
+        if (newNotification.action === 'added') {
+          toastMsg = `New task assigned: "${newNotification.taskDetails.title}"`;
+        } else if (newNotification.action === 'updated') {
+          toastMsg = `Task updated by admin: "${newNotification.taskDetails.title}"`;
+        } else if (newNotification.action === 'deleted') {
+          toastMsg = `Task deleted by admin: "${newNotification.taskDetails.title}"`;
+        }
+        showToast(toastMsg, 'info');
 
         // Trigger background task reload to keep board fresh!
         if (taskContext && typeof taskContext.loadTasks === 'function') {

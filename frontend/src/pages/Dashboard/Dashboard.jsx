@@ -10,9 +10,11 @@ import TaskForm from '../../components/TaskForm/TaskForm';
 import { filterTasks } from '../../utils/filterTasks';
 import { sortTasks } from '../../utils/sortTasks';
 import { fetchFromAPI } from '../../services/api';
+import { useToast } from '../../context/ToastContext';
 
 export const Dashboard = () => {
   const { user } = useAuth();
+  const { showToast } = useToast();
   const {
     tasks,
     loadingTasks,
@@ -120,7 +122,7 @@ export const Dashboard = () => {
   const handleFormSubmit = useCallback(async (e) => {
     e.preventDefault();
     if (!formData.title.trim()) {
-      alert('Task title cannot be empty');
+      showToast('Task title cannot be empty', 'error');
       return;
     }
 
@@ -131,7 +133,7 @@ export const Dashboard = () => {
       const chosenDateMidnight = new Date(chosenDate.getUTCFullYear(), chosenDate.getUTCMonth(), chosenDate.getUTCDate());
       const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
       if (chosenDateMidnight < todayMidnight) {
-        alert('Due date cannot be in the past');
+        showToast('Due date cannot be in the past', 'error');
         return;
       }
     }
@@ -147,27 +149,33 @@ export const Dashboard = () => {
     setSubmitting(false);
     if (result.success) {
       setView('list');
+      showToast(view === 'create' ? 'Task created successfully' : 'Task updated successfully', 'success');
     } else {
-      alert(result.error || 'Error saving task');
+      showToast(result.error || 'Error saving task', 'error');
     }
-  }, [view, formData, editingTaskId, createTask, updateTask]);
+  }, [view, formData, editingTaskId, createTask, updateTask, showToast]);
 
   // Toggle Task Completion Button
   const handleToggleComplete = useCallback(async (task) => {
     const result = await toggleTaskComplete(task);
     if (!result.success) {
-      alert(result.error || 'Error updating status');
+      showToast(result.error || 'Error updating status', 'error');
+    } else {
+      const isNowCompleted = task.status !== 'Completed';
+      showToast(isNowCompleted ? 'Task marked as Completed' : 'Task marked as Pending', 'success');
     }
-  }, [toggleTaskComplete]);
+  }, [toggleTaskComplete, showToast]);
 
   // Delete a Task
   const handleDeleteTask = useCallback(async (taskId) => {
     if (!window.confirm('Are you sure you want to delete this task?')) return;
     const result = await deleteTask(taskId);
     if (!result.success) {
-      alert(result.error || 'Error deleting task');
+      showToast(result.error || 'Error deleting task', 'error');
+    } else {
+      showToast('Task deleted successfully', 'success');
     }
-  }, [deleteTask]);
+  }, [deleteTask, showToast]);
 
   // Stats Calculations
   const stats = useMemo(() => {
