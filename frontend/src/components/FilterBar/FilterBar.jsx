@@ -31,6 +31,7 @@ export const FilterBar = ({
           style={styles.filterSelect}
           options={[
             { value: 'All', label: 'All Status' },
+            { value: 'Active', label: 'Pending / Active' },
             { value: 'Pending', label: 'Pending' },
             { value: 'In Progress', label: 'In Progress' },
             { value: 'Completed', label: 'Completed' },

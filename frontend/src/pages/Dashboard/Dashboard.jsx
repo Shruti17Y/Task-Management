@@ -212,6 +212,8 @@ export const Dashboard = () => {
         totalTasks={stats.totalTasks}
         pendingTasks={stats.pendingTasks}
         completedTasks={stats.completedTasks}
+        statusFilter={statusFilter}
+        setStatusFilter={setStatusFilter}
       />
 
       <FilterBar
