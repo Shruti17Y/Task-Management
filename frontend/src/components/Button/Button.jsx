@@ -78,12 +78,15 @@ const styles = {
     boxSizing: 'border-box',
   },
   primary: {
-    background: 'var(--accent)',
+    background: 'var(--accent-gradient, var(--accent))',
     color: '#fff',
     fontWeight: '600',
+    boxShadow: '0 4px 10px var(--accent-shadow, rgba(255, 121, 26, 0.2))',
   },
   primaryHover: {
-    filter: 'brightness(0.95)',
+    background: 'var(--accent-gradient-hover, var(--accent-hover))',
+    boxShadow: '0 6px 14px var(--accent-shadow, rgba(255, 121, 26, 0.25))',
+    transform: 'translateY(-1px)',
   },
   secondary: {
     background: 'var(--code-bg)',
